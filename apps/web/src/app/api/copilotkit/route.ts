@@ -40,6 +40,10 @@ const runtime = new CopilotRuntime({
       deploymentUrl: "http://localhost:8123",
       graphId: "shared_state",
     }),
+    subgraphs: new LangGraphAgent({
+      deploymentUrl: "http://localhost:8123",
+      graphId: "subgraphs",
+    }),
   },
 });
 

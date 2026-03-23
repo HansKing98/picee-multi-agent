@@ -45,6 +45,13 @@ const demoCards = [
     description: "查看 AI 烹饪助手能力，包括内容生成、改写与结构化编辑体验。",
     cta: "进入 /ai-make-your-recipe",
   },
+  {
+    href: "/ai-travel-multiple-agent",
+    tag: "Sub Graphs Agent",
+    title: "AI Travel Multiple Agent",
+    description: "查看 AI 旅行助手能力，包括内容生成、改写与结构化编辑体验。",
+    cta: "进入 /ai-travel-multiple-agent",
+  },
 ];
 
 export default function HomePage() {
