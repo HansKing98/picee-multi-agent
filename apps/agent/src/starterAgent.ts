@@ -46,7 +46,12 @@ const tools = [getWeather];
 // 5. Define the chat node, which will handle the chat logic
 async function chat_node(state: AgentState, config: RunnableConfig) {
   // 5.1 Define the model, lower temperature for deterministic responses
-  const model = new ChatOpenAI({ temperature: 0, model: "gpt-4o" });
+  const model = new ChatOpenAI({ temperature: 0, model: "gpt-4o",
+    ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
+    ...(process.env.OPENAI_API_BASE_URL && {
+      configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
+    }),
+  });
 
   // 5.2 Bind the tools to the model, include CopilotKit actions. This allows
   //     the model to call tools that are defined in CopilotKit by the frontend.

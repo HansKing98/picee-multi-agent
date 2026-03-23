@@ -3,7 +3,8 @@
   "dockerfile_lines": [],
   "dependencies": ["."],
   "graphs": {
-    "starterAgent": "./src/agent.ts:graph"
+    "starterAgent": "./src/starterAgent.ts:graph",
+    "predictive_state_updates": "./src/predictiveStateUpdates.ts:predictiveStateUpdatesGraph"
   },
   "env": ".env"
 }

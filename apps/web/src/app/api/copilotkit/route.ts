@@ -20,6 +20,12 @@ const runtime = new CopilotRuntime({
       graphId: "starterAgent",
       langsmithApiKey: process.env.LANGSMITH_API_KEY || "",
     }),
+    predictive_state_updates: new LangGraphAgent({
+      deploymentUrl:
+        process.env.LANGGRAPH_DEPLOYMENT_URL || "http://localhost:8123",
+      graphId: "predictive_state_updates",
+      langsmithApiKey: process.env.LANGSMITH_API_KEY || "",
+    }),
   },
 });
 

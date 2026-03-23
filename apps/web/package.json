@@ -13,6 +13,10 @@
     "@copilotkit/react-textarea": "1.54.0",
     "@copilotkit/react-ui": "1.54.0",
     "@copilotkit/runtime": "1.54.0",
+    "@tiptap/react": "^3.20.4",
+    "@tiptap/starter-kit": "^3.20.4",
+    "diff": "^8.0.3",
+    "markdown-it": "^14.1.1",
     "next": "16.0.8",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
@@ -22,6 +26,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
