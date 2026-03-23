@@ -38,6 +38,13 @@ const demoCards = [
     description: "查看 AI 诗句生成能力，包括内容生成、改写与结构化编辑体验。",
     cta: "进入 /ai-haiku-generator",
   },
+  {
+    href: "/ai-make-your-recipe",
+    tag: "Shared State",
+    title: "AI Make Your Recipe",
+    description: "查看 AI 烹饪助手能力，包括内容生成、改写与结构化编辑体验。",
+    cta: "进入 /ai-make-your-recipe",
+  },
 ];
 
 export default function HomePage() {

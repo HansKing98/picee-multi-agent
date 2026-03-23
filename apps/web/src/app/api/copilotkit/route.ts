@@ -36,6 +36,10 @@ const runtime = new CopilotRuntime({
       deploymentUrl: "http://localhost:8123",
       graphId: "tool_based_generative_ui",
     }),
+    shared_state: new LangGraphAgent({
+      deploymentUrl: "http://localhost:8123",
+      graphId: "shared_state",
+    }),
   },
 });
 
