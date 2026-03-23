@@ -28,8 +28,15 @@ const demoCards = [
     href: "/ai-long-running-task",
     tag: "Agentic Generative UI",
     title: "AI Long Running Task",
-    description: "查看 AI 长任务生成能力，包括内容生成、改写与结构化编辑体验。",
+    description: "查看 AI 长任务执行能力，包括内容生成、改写与结构化编辑体验。",
     cta: "进入 /ai-long-running-task",
+  },
+  {
+    href: "/ai-haiku-generator",
+    tag: "Tool Based Generative UI",
+    title: "AI Haiku Generator",
+    description: "查看 AI 诗句生成能力，包括内容生成、改写与结构化编辑体验。",
+    cta: "进入 /ai-haiku-generator",
   },
 ];
 

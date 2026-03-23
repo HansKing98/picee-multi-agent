@@ -6,7 +6,8 @@
     "starterAgent": "./src/starterAgent.ts:graph",
     "predictive_state_updates": "./src/predictiveStateUpdates.ts:predictiveStateUpdatesGraph",
     "human_in_the_loop": "./src/humanInTheLoopGraph.ts:humanInTheLoopGraph",
-    "agentic_generative_ui": "./src/agenticGenerativeUiGraph.ts:agenticGenerativeUiGraph"
+    "agentic_generative_ui": "./src/agenticGenerativeUiGraph.ts:agenticGenerativeUiGraph",
+    "tool_based_generative_ui": "./src/toolBasedGenerativeUiGraph.ts:toolBasedGenerativeUiGraph"
   },
   "env": ".env"
 }
