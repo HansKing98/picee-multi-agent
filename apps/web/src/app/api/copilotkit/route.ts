@@ -21,16 +21,16 @@ const runtime = new CopilotRuntime({
       langsmithApiKey: process.env.LANGSMITH_API_KEY || "",
     }),
     predictive_state_updates: new LangGraphAgent({
-      deploymentUrl:
-        process.env.LANGGRAPH_DEPLOYMENT_URL || "http://localhost:8123",
+      deploymentUrl: "http://localhost:8123",
       graphId: "predictive_state_updates",
-      langsmithApiKey: process.env.LANGSMITH_API_KEY || "",
     }),
     human_in_the_loop: new LangGraphAgent({
-      deploymentUrl:
-        process.env.LANGGRAPH_DEPLOYMENT_URL || "http://localhost:8123",
+      deploymentUrl:"http://localhost:8123",
       graphId: "human_in_the_loop",
-      langsmithApiKey: process.env.LANGSMITH_API_KEY || "",
+    }),
+    agentic_generative_ui: new LangGraphAgent({
+      deploymentUrl: "http://localhost:8123",
+      graphId: "agentic_generative_ui",
     }),
   },
 });

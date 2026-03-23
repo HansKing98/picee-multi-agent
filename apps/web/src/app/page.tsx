@@ -24,6 +24,13 @@ const demoCards = [
     description: "查看 AI 待办事项确认能力，包括内容生成、改写与结构化编辑体验。",
     cta: "进入 /ai-todo-confirm",
   },
+  {
+    href: "/ai-long-running-task",
+    tag: "Agentic Generative UI",
+    title: "AI Long Running Task",
+    description: "查看 AI 长任务生成能力，包括内容生成、改写与结构化编辑体验。",
+    cta: "进入 /ai-long-running-task",
+  },
 ];
 
 export default function HomePage() {
