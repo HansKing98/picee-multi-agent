@@ -26,6 +26,12 @@ const runtime = new CopilotRuntime({
       graphId: "predictive_state_updates",
       langsmithApiKey: process.env.LANGSMITH_API_KEY || "",
     }),
+    human_in_the_loop: new LangGraphAgent({
+      deploymentUrl:
+        process.env.LANGGRAPH_DEPLOYMENT_URL || "http://localhost:8123",
+      graphId: "human_in_the_loop",
+      langsmithApiKey: process.env.LANGSMITH_API_KEY || "",
+    }),
   },
 });
 

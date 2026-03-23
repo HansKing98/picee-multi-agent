@@ -4,7 +4,8 @@
   "dependencies": ["."],
   "graphs": {
     "starterAgent": "./src/starterAgent.ts:graph",
-    "predictive_state_updates": "./src/predictiveStateUpdates.ts:predictiveStateUpdatesGraph"
+    "predictive_state_updates": "./src/predictiveStateUpdates.ts:predictiveStateUpdatesGraph",
+    "human_in_the_loop": "./src/humanInTheLoopGraph.ts:humanInTheLoopGraph"
   },
   "env": ".env"
 }

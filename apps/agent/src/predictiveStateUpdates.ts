@@ -47,10 +47,10 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   /**
    * Standard chat node.
    */
-  console.log('hans-debug',{
-    state,
-    config
-  })
+  // console.log('hans-debug',{
+  //   state,
+  //   config
+  // })
 
   const systemPrompt = `
     You are a helpful assistant for writing documents.
@@ -64,7 +64,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   // Define the model
   const model = new ChatOpenAI({
     temperature: 0,
-    model: "openai/gpt-4o",
+    model: "openai/gpt-5.2",
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },

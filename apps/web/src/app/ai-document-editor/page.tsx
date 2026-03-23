@@ -46,7 +46,6 @@ export default function PredictiveStateUpdates({ params }: PredictiveStateUpdate
       runtimeUrl="/api/copilotkit"
       showDevConsole={true}
       agent="predictive_state_updates"
-      threadId="199901"
     >
       <div
         className="min-h-screen w-full"

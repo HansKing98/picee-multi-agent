@@ -17,6 +17,13 @@ const demoCards = [
     description: "查看 AI 文档编辑能力，包括内容生成、改写与结构化编辑体验。",
     cta: "进入 /ai-document-editor",
   },
+  {
+    href: "/ai-todo-confirm",
+    tag: "Human in the Loop",
+    title: "AI Todo Confirm",
+    description: "查看 AI 待办事项确认能力，包括内容生成、改写与结构化编辑体验。",
+    cta: "进入 /ai-todo-confirm",
+  },
 ];
 
 export default function HomePage() {
