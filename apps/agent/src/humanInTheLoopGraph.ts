@@ -79,15 +79,14 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
    * If task steps are defined, the user can enable/disable them using interrupts.
    */
   const systemPrompt = `
-    You are a helpful assistant that can perform any task.
-    You MUST call the \`plan_execution_steps\` function when the user asks you to perform a task.
-    Always make sure you will provide tasks based on the user query
+    你是一个可以协助完成各类任务的助手。
+    当用户请你执行某项任务时，必须调用 \`plan_execution_steps\` 函数。
+    请始终根据用户的具体请求来规划步骤。
     `;
 
   // Define the model
   const model = new ChatOpenAI({
-    temperature: 0,
-    model: "openai/gpt-5.2",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -173,7 +172,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
       // Add a tool response to satisfy OpenAI's requirements
       const toolResponse = {
         role: "tool" as const,
-        content: "Task steps generated.",
+        content: "任务步骤已生成。",
         tool_call_id: toolCall.id
       };
       
@@ -221,14 +220,14 @@ async function processStepsNode(state: AgentState, config?: RunnableConfig): Pro
   
   // Generate the creative completion response
   const finalPrompt = `
-    Provide a textual description of how you are performing the task.
-    If the user has disabled a step, you are not allowed to perform that step.
-    However, you should find a creative workaround to perform the task, and if an essential step is disabled, you can even use
-    some humor in the description of how you are performing the task.
-    Don't just repeat a list of steps, come up with a creative but short description (3 sentences max) of how you are performing the task.
+    请用文字描述你正在如何执行任务。
+    若用户禁用了某一步，你不得执行该步骤。
+    但仍需想办法创造性地完成任务；若关键步骤被禁用，可以在描述中适度用幽默化解。
+    不要简单罗列步骤，用最多三句话、有创意且简短地说明你的执行方式。
     `;
   
-  const finalResponse = await new ChatOpenAI({ model: "gpt-4o",
+  const finalResponse = await new ChatOpenAI({
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },

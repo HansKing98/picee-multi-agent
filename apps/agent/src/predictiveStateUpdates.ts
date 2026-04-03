@@ -11,7 +11,7 @@ import { Command, Annotation, MessagesAnnotation, StateGraph, END, START } from 
 const WRITE_DOCUMENT_TOOL = {
   type: "function",
   function: {
-    name: "write_document_local",
+    name: "write_document",
     description: [
       "Write a document. Use markdown formatting to format the document.",
       "It's good to format the document extensively so it's easy to read.",
@@ -54,7 +54,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
 
   const systemPrompt = `
     You are a helpful assistant for writing documents.
-    To write the document, you MUST use the write_document_local tool.
+    To write the document, you MUST use the write_document tool.
     You MUST write the full document, even when changing only a few words.
     When you wrote the document, DO NOT repeat it as a message.
     Just briefly summarize the changes you made. 2 sentences max.
@@ -64,7 +64,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   // Define the model
   const model = new ChatOpenAI({
     temperature: 0,
-    model: "openai/gpt-5.2",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -75,11 +75,11 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
     config = { recursionLimit: 25 };
   }
 
-  // Use "predict_state" metadata to set up streaming for the write_document_local tool
+  // Use "predict_state" metadata to set up streaming for the write_document tool
   if (!config.metadata) config.metadata = {};
   config.metadata.predict_state = [{
     state_key: "document",
-    tool: "write_document_local",
+    tool: "write_document",
     tool_argument: "document"
   }];
 
@@ -108,7 +108,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   if (response.tool_calls && response.tool_calls.length > 0) {
     const toolCall = response.tool_calls[0];
 
-    if (toolCall.name === "write_document_local") {
+    if (toolCall.name === "write_document") {
       // Add the tool response to messages
       const toolResponse = {
         role: "tool" as const,
@@ -130,7 +130,8 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
         }]
       };
 
-      const updatedMessages = [...messages, toolResponse, confirmToolCall];
+      // const updatedMessages = [...messages, toolResponse, confirmToolCall];
+      const updatedMessages = [...messages];
 
       // Return Command to route to end
       return new Command({

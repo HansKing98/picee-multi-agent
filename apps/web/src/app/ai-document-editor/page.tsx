@@ -204,6 +204,7 @@ const DocumentEditor = () => {
     agentId: "predictive_state_updates",
     updates: [UseAgentUpdate.OnStateChanged, UseAgentUpdate.OnRunStatusChanged],
   });
+  
 
   const agentState = agent.state as AgentState | undefined;
   const setAgentState = (s: AgentState) => agent.setState(s);
@@ -259,30 +260,6 @@ const DocumentEditor = () => {
     }
   }, [text]);
 
-  // TODO(steve): Remove this when all agents have been updated to use write_document tool.
-  useHumanInTheLoop(
-    {
-      agentId: "predictive_state_updates",
-      name: "confirm_changes",
-      render: ({ args, respond, status }) => (
-        <ConfirmChanges
-          args={args}
-          respond={respond}
-          status={status}
-          onReject={() => {
-            editor?.commands.setContent(fromMarkdown(currentDocument));
-            setAgentState({ document: currentDocument });
-          }}
-          onConfirm={() => {
-            editor?.commands.setContent(fromMarkdown(agentState?.document || ""));
-            setCurrentDocument(agentState?.document || "");
-            setAgentState({ document: agentState?.document || "" });
-          }}
-        />
-      ),
-    },
-    [agentState?.document],
-  );
 
   // Action to write the document.
   useHumanInTheLoop(

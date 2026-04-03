@@ -14,7 +14,7 @@ const PERFORM_TASK_TOOL = {
   type: "function",
   function: {
     name: "generate_task_steps_generative_ui",
-    description: "Make up 10 steps (only a couple of words per step) that are required for a task. The step should be in gerund form (i.e. Digging hole, opening door, ...)",
+    description: "为任务编造 10 个步骤（每步仅两三个词）。步骤使用动名词形式（例如：挖洞、开门……）",
     parameters: {
       type: "object",
       properties: {
@@ -25,17 +25,17 @@ const PERFORM_TASK_TOOL = {
             properties: {
               description: {
                 type: "string",
-                description: "The text of the step in gerund form"
+                description: "步骤文字，动名词形式"
               },
               status: {
                 type: "string",
                 enum: ["pending"],
-                description: "The status of the step, always 'pending'"
+                description: "步骤状态，始终为 'pending'"
               }
             },
             required: ["description", "status"]
           },
-          description: "An array of 10 step objects, each containing text and status"
+          description: "包含 10 个步骤对象的数组，每项含 description 与 status"
         }
       },
       required: ["steps"]
@@ -72,17 +72,16 @@ async function chatNode(state: AgentState, config?: RunnableConfig) {
    * Standard chat node.
    */
   const systemPrompt = `
-    You are a helpful assistant assisting with any task. 
-    When asked to do something, you MUST call the function \`generate_task_steps_generative_ui\`
-    that was provided to you.
-    If you called the function, you MUST NOT repeat the steps in your next response to the user.
-    Just give a very brief summary (one sentence) of what you did with some emojis. 
-    Always say you actually did the steps, not merely generated them.
+    你是一个可协助完成各类任务的助手。
+    当用户请你做事时，必须调用已提供的 \`generate_task_steps_generative_ui\` 函数。
+    若已调用该函数，请勿在下一轮回复中重复列出各步骤。
+    仅用一句话并搭配少量 emoji，简要说明你完成了什么。
+    语气上要体现你确实执行了这些步骤，而非仅「生成」了步骤列表。
     `;
 
   // Define the model
   const model = new ChatOpenAI({
-    model: "openai/gpt-5.2",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -135,7 +134,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig) {
       // Add the tool response to messages
       const toolResponse = {
         role: "tool" as const,
-        content: "Steps executed.",
+        content: "步骤已执行。",
         tool_call_id: toolCall.id
       };
 

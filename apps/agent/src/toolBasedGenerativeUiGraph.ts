@@ -18,7 +18,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
 
   const model = new ChatOpenAI({
     temperature: 0,
-    model: "gpt-4o",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -33,7 +33,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   );
 
   const systemMessage = new SystemMessage({
-    content: 'Help the user with writing Haikus. If the user asks for a haiku, use the generate_haiku tool to display the haiku to the user.'
+    content: "协助用户创作俳句。若用户索要俳句，请使用 generate_haiku 工具将俳句展示给用户。"
   });
 
   const response = await modelWithTools.invoke([

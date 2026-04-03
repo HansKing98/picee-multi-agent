@@ -91,10 +91,10 @@ const STATIC_HOTELS: Hotel[] = [
 ];
 
 const STATIC_EXPERIENCES: Experience[] = [
-  { name: "Pier 39", type: "activity", description: "Iconic waterfront destination with shops and sea lions", location: "Fisherman's Wharf" },
-  { name: "Golden Gate Bridge", type: "activity", description: "World-famous suspension bridge with stunning views", location: "Golden Gate" },
-  { name: "Swan Oyster Depot", type: "restaurant", description: "Historic seafood counter serving fresh oysters", location: "Polk Street" },
-  { name: "Tartine Bakery", type: "restaurant", description: "Artisanal bakery famous for bread and pastries", location: "Mission District" }
+  { name: "Pier 39", type: "activity", description: "标志性海滨景点，有商铺与海狮", location: "渔人码头" },
+  { name: "Golden Gate Bridge", type: "activity", description: "世界闻名的悬索桥，视野开阔", location: "金门" },
+  { name: "Swan Oyster Depot", type: "restaurant", description: "历史悠久的海鲜吧台，供应新鲜生蚝", location: "波尔克街" },
+  { name: "Tartine Bakery", type: "restaurant", description: "以面包与糕点闻名的手工烘焙店", location: "米慎区" }
 ];
 
 function createInterrupt(message: string, options: any[], recommendation: any, agent: string) {
@@ -114,8 +114,8 @@ async function flightsFinder(state: TravelAgentState, config?: RunnableConfig): 
   const selectedFlight = state.itinerary?.flight;
   
   let flightChoice: Flight;
-  const message = `Found ${flights.length} flight options from ${state.origin || 'Amsterdam'} to ${state.destination || 'San Francisco'}.\n` +
-    `I recommend choosing the flight by ${flights[0].airline} since it's known to be on time and cheaper.`
+  const message = `找到 ${flights.length} 条从 ${state.origin || '阿姆斯特丹'} 飞往 ${state.destination || '旧金山'} 的航班。\n` +
+    `建议选择 ${flights[0].airline} 的航班，准点率较好且价格更优。`
   if (!selectedFlight) {
     const interruptResult = createInterrupt(
       message,
@@ -144,7 +144,7 @@ async function flightsFinder(state: TravelAgentState, config?: RunnableConfig): 
           content: message,
         }),
         new AIMessage({
-          content: `Flights Agent: Great. I'll book you the ${flightChoice.airline} flight from ${flightChoice.departure} to ${flightChoice.arrival}.`,
+          content: `机票助手：好的。将为您预订 ${flightChoice.airline} 从 ${flightChoice.departure} 飞往 ${flightChoice.arrival} 的航班。`,
         }),
       ]
     }
@@ -158,8 +158,8 @@ async function hotelsFinder(state: TravelAgentState, config?: RunnableConfig): P
   const selectedHotel = state.itinerary?.hotel;
   
   let hotelChoice: Hotel;
-  const message = `Found ${hotels.length} accommodation options in ${state.destination || 'San Francisco'}.\n
-    I recommend choosing the ${hotels[2].name} since it strikes the balance between rating, price, and location.`
+  const message = `在 ${state.destination || '旧金山'} 找到 ${hotels.length} 家住宿。\n` +
+    `建议选择 ${hotels[2].name}，在评分、价格与位置之间较为均衡。`
   if (!selectedHotel) {
     const interruptResult = createInterrupt(
       message,
@@ -188,7 +188,7 @@ async function hotelsFinder(state: TravelAgentState, config?: RunnableConfig): P
           content: message,
         }),
         new AIMessage({
-          content: `Hotels Agent: Excellent choice! You'll like ${hotelChoice.name}.`
+          content: `酒店助手：选得不错！您会喜欢 ${hotelChoice.name} 的。`
         }),
       ]
     }
@@ -204,7 +204,7 @@ async function experiencesFinder(state: TravelAgentState, config?: RunnableConfi
 
   const model = new ChatOpenAI({
     temperature: 0,
-    model: "gpt-4o",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -218,16 +218,16 @@ async function experiencesFinder(state: TravelAgentState, config?: RunnableConfi
   const itinerary = state.itinerary || {};
 
   const systemPrompt = `
-    You are the experiences agent. Your job is to find restaurants and activities for the user.
-    You already went ahead and found a bunch of experiences. All you have to do now, is to let the user know of your findings.
-    
-    Current status:
-    - Origin: ${state.origin || 'Amsterdam'}
-    - Destination: ${state.destination || 'San Francisco'}
-    - Flight chosen: ${JSON.stringify(itinerary.flight) || 'None'}
-    - Hotel chosen: ${JSON.stringify(itinerary.hotel) || 'None'}
-    - Activities found: ${JSON.stringify(activities)}
-    - Restaurants found: ${JSON.stringify(restaurants)}
+    你是「体验」助手，负责为用户推荐餐厅与活动。
+    你已经检索到一批体验项目，现在只需向用户说明你的发现即可。
+
+    当前状态：
+    - 出发地：${state.origin || '阿姆斯特丹'}
+    - 目的地：${state.destination || '旧金山'}
+    - 已选航班：${JSON.stringify(itinerary.flight) || '无'}
+    - 已选酒店：${JSON.stringify(itinerary.hotel) || '无'}
+    - 已找到的活动：${JSON.stringify(activities)}
+    - 已找到的餐厅：${JSON.stringify(restaurants)}
     `;
 
   // Get experiences response
@@ -250,18 +250,18 @@ const SUPERVISOR_RESPONSE_TOOL = {
   type: "function" as const,
   function: {
     name: "supervisor_response",
-    description: "Always use this tool to structure your response to the user.",
+    description: "请始终使用本工具结构化你对用户的回复。",
     parameters: {
       type: "object",
       properties: {
         answer: {
           type: "string",
-          description: "The answer to the user"
+          description: "给用户的回答内容"
         },
         next_agent: {
           type: "string",
           enum: ["flights_agent", "hotels_agent", "experiences_agent", "complete"],
-          description: "The agent to go to. Not required if you do not want to route to another agent."
+          description: "下一步要转交的助手；若无需再转交其他助手则可省略。"
         }
       },
       required: ["answer"]
@@ -279,29 +279,29 @@ async function supervisorAgent(state: TravelAgentState, config?: RunnableConfig)
   const hasExperiences = state.experiences !== null;
 
   const systemPrompt = `
-    You are a travel planning supervisor. Your job is to coordinate specialized agents to help plan a trip.
-    
-    Current status:
-    - Origin: ${state.origin || 'Amsterdam'}
-    - Destination: ${state.destination || 'San Francisco'}
-    - Flights found: ${hasFlights}
-    - Hotels found: ${hasHotels}
-    - Experiences found: ${hasExperiences}
-    - Itinerary (Things that the user has already confirmed selection on): ${JSON.stringify(itinerary, null, 2)}
-    
-    Available agents:
-    - flights_agent: Finds flight options
-    - hotels_agent: Finds hotel options  
-    - experiences_agent: Finds restaurant and activity recommendations
-    - complete: Mark task as complete when all information is gathered
-    
-    You must route to the appropriate agent based on what's missing. Once all agents have completed their tasks, route to 'complete'.
+    你是旅行规划协调员，负责调度各专职助手帮用户规划行程。
+
+    当前状态：
+    - 出发地：${state.origin || '阿姆斯特丹'}
+    - 目的地：${state.destination || '旧金山'}
+    - 是否已有航班：${hasFlights}
+    - 是否已有酒店：${hasHotels}
+    - 是否已有体验推荐：${hasExperiences}
+    - 行程单（用户已确认的选项）：${JSON.stringify(itinerary, null, 2)}
+
+    可用助手：
+    - flights_agent：查找航班
+    - hotels_agent：查找酒店
+    - experiences_agent：推荐餐厅与活动
+    - complete：全部信息齐备时结束任务
+
+    请根据尚缺环节路由到对应助手；各助手都完成后请路由到 complete。
     `;
 
   // Define the model
   const model = new ChatOpenAI({
     temperature: 0,
-    model: "gpt-4o",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -336,7 +336,7 @@ async function supervisorAgent(state: TravelAgentState, config?: RunnableConfig)
 
     const toolResponse = new ToolMessage({
       tool_call_id: toolCall.id!,
-      content: `Routing to ${nextAgent} and providing the answer`,
+      content: `正在转交至 ${nextAgent} 并附带上述回复`,
     });
 
     messages = [
