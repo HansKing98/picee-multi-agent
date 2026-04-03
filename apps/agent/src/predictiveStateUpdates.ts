@@ -13,20 +13,20 @@ const WRITE_DOCUMENT_TOOL = {
   function: {
     name: "write_document",
     description: [
-      "Write a document. Use markdown formatting to format the document.",
-      "It's good to format the document extensively so it's easy to read.",
-      "You can use all kinds of markdown.",
-      "However, do not use italic or strike-through formatting, it's reserved for another purpose.",
-      "You MUST write the full document, even when changing only a few words.",
-      "When making edits to the document, try to make them minimal - do not change every word.",
-      "Keep stories SHORT!"
+      "写文档。使用 markdown 格式对文档进行排版。",
+      "最好对文档进行充分的排版，以便于阅读。",
+      "你可以使用各种 markdown 格式。",
+      "但是，不要使用斜体或删除线格式，它被保留用于其他目的。",
+      "你必须输出完整的文档，即使只修改了几个字。",
+      "在修改文档时，尽量做最小的改动 - 不要更改每一个字。",
+      "故事要保持简短！"
     ].join(" "),
     parameters: {
       type: "object",
       properties: {
         document: {
           type: "string",
-          description: "The document to write"
+          description: "要编写的文档"
         },
       },
     }
@@ -49,12 +49,12 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
    */
 
   const systemPrompt = `
-    You are a helpful assistant for writing documents.
-    To write the document, you MUST use the write_document tool.
-    You MUST write the full document, even when changing only a few words.
-    When you wrote the document, DO NOT repeat it as a message.
-    Just briefly summarize the changes you made. 2 sentences max.
-    This is the current state of the document: ----\n ${state.document || ''}\n-----
+    你是一个编写文档的得力助手。
+    要写文档，你必须使用 write_document 工具。
+    你必须输出完整的文档，即使只修改了几个字。
+    当你写完文档后，不要在消息中重复文档内容。
+    只需简要总结你所做的修改。最多 2 句话。
+    这是文档的当前状态：----\n ${state.document || ''}\n-----
     `;
 
   // Define the model
@@ -108,7 +108,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
       // Add the tool response to messages
       const toolResponse = {
         role: "tool" as const,
-        content: "Document written.",
+        content: "文档已写入。",
         tool_call_id: toolCall.id
       };
 

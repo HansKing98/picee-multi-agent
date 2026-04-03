@@ -38,8 +38,8 @@ export default function PredictiveStateUpdates({ params }: PredictiveStateUpdate
   const defaultChatHeight = 50;
   const { isChatOpen, setChatHeight, setIsChatOpen, isDragging, chatHeight, handleDragStart } =
     useMobileChat(defaultChatHeight);
-  const chatTitle = "AI Document Editor";
-  const chatDescription = "Ask me to create or edit a document";
+  const chatTitle = "AI 文档编辑器";
+  const chatDescription = "让我帮您创建或编辑文档";
 
   return (
     <CopilotKit
@@ -188,14 +188,14 @@ const DocumentEditor = () => {
   useConfigureSuggestions({
     suggestions: [
       {
-        title: "Write a pirate story",
-        message: "Please write a story about a pirate named Candy Beard.",
+        title: "写一个海盗的故事",
+        message: "请写一个关于名叫“糖胡子”的海盗的故事。",
       },
       {
-        title: "Write a mermaid story",
-        message: "Please write a story about a mermaid named Luna.",
+        title: "写一个美人鱼的故事",
+        message: "请写一个关于名叫“露娜”的美人鱼的故事。",
       },
-      { title: "Add character", message: "Please add a character named Courage." },
+      { title: "添加角色", message: "请添加一个名叫“勇气”的角色。" },
     ],
     available: "always",
   });
@@ -266,9 +266,9 @@ const DocumentEditor = () => {
     {
       agentId: "predictive_state_updates",
       name: "write_document",
-      description: `Present the proposed changes to the user for review`,
+      description: `将建议的修改展示给用户进行核对`,
         parameters: z.object({
-        document: z.string().describe("The full updated document in markdown format"),
+        document: z.string().describe("完整的更新后的 markdown 格式文档"),
       }) ,
       render({ args, status, respond }: { args: { document?: string }; status: string; respond?: (result: unknown) => Promise<void> }) {
         if (status === "executing") {
@@ -299,7 +299,7 @@ const DocumentEditor = () => {
     <div className="relative min-h-screen w-full">
       {placeholderVisible && (
         <div className="absolute top-6 left-6 m-4 pointer-events-none text-gray-400">
-          Write whatever you want here in Markdown format...
+          在此处以 Markdown 格式输入您想要的任何内容...
         </div>
       )}
       <EditorContent editor={editor} />
@@ -322,8 +322,8 @@ function ConfirmChanges({ args, respond, status, onReject, onConfirm }: ConfirmC
       data-testid="confirm-changes-modal"
       className="bg-white p-6 rounded shadow-lg border border-gray-200 mt-5 mb-5"
     >
-      <h2 className="text-lg font-bold mb-4">Confirm Changes</h2>
-      <p className="mb-6">Do you want to accept the changes?</p>
+      <h2 className="text-lg font-bold mb-4">确认修改</h2>
+      <p className="mb-6">您要接受这些修改吗？</p>
       {accepted === null && (
         <div className="flex justify-end space-x-4">
           <button
@@ -340,7 +340,7 @@ function ConfirmChanges({ args, respond, status, onReject, onConfirm }: ConfirmC
               }
             }}
           >
-            Reject
+            拒绝
           </button>
           <button
             data-testid="confirm-button"
@@ -356,7 +356,7 @@ function ConfirmChanges({ args, respond, status, onReject, onConfirm }: ConfirmC
               }
             }}
           >
-            Confirm
+            确认
           </button>
         </div>
       )}
@@ -366,7 +366,7 @@ function ConfirmChanges({ args, respond, status, onReject, onConfirm }: ConfirmC
             data-testid="status-display"
             className="mt-4 bg-gray-200 text-black py-2 px-4 rounded inline-block"
           >
-            {accepted ? "✓ Accepted" : "✗ Rejected"}
+            {accepted ? "✓ 已接受" : "✗ 已拒绝"}
           </div>
         </div>
       )}
