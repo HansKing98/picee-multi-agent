@@ -356,7 +356,7 @@ const ChatContent = () => {
   useHumanInTheLoop({
     agentId: "human_in_the_loop",
     name: "generate_task_steps",
-    description: "生成供用户执行的任务步骤列表，如果用户要求步骤数量，需要准确识别。",
+    description: "复杂任务调用这个工具（超过5个步骤），生成供用户执行的任务步骤列表，如果用户要求步骤数量，需要准确识别。",
       parameters: z.object({
       steps: z.array(
         z.object({

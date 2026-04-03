@@ -11,7 +11,7 @@ const DEFINE_TASK_TOOL = {
   type: "function",
   function: {
     name: "plan_execution_steps",
-    description: "Make up 10 steps (only a couple of words per step) that are required for a task. The step should be in imperative form (i.e. Dig hole, Open door, ...)",
+    description: "简单任务工具（小于等于5个步骤），为一项任务构思n个必需的步骤（每个步骤只需几个字）。步骤应使用祈使句形式（例如：挖洞，开门，...）",
     parameters: {
       type: "object",
       properties: {
@@ -22,17 +22,17 @@ const DEFINE_TASK_TOOL = {
             properties: {
               description: {
                 type: "string",
-                description: "The text of the step in imperative form"
+                description: "祈使句形式的步骤文本"
               },
               status: {
                 type: "string",
                 enum: ["enabled"],
-                description: "The status of the step, always 'enabled'"
+                description: "步骤的状态，始终为 'enabled'"
               }
             },
             required: ["description", "status"]
           },
-          description: "An array of 10 step objects, each containing text and status"
+          description: "包含n个步骤对象的数组，每个对象包含文本和状态"
         }
       },
       required: ["steps"]
