@@ -51,12 +51,12 @@ const Chat = () => {
   useConfigureSuggestions({
     suggestions: [
       {
-        title: "Simple plan",
-        message: "Please build a plan to go to mars in 5 steps.",
+        title: "简单计划",
+        message: "请制定一个5步去火星的计划。",
       },
       {
-        title: "Complex plan",
-        message: "Please build a plan to go to make pizza in 10 steps.",
+        title: "复杂计划",
+        message: "请制定一个10步做披萨的计划。",
       },
     ],
     available: "always",
@@ -107,10 +107,10 @@ function TaskProgress({ steps, theme }: { steps: AgentState["steps"]; theme?: st
         <div className="mb-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Task Progress
+              任务进度
             </h3>
             <div className={`text-sm ${theme === "dark" ? "text-slate-400" : "text-gray-500"}`}>
-              {completedCount}/{steps.length} Complete
+              {completedCount}/{steps.length} 已完成
             </div>
           </div>
 
@@ -218,7 +218,7 @@ function TaskProgress({ steps, theme }: { steps: AgentState["steps"]; theme?: st
                         theme === "dark" ? "text-blue-400" : "text-blue-600"
                       }`}
                     >
-                      Processing...
+                      处理中...
                     </div>
                   )}
                 </div>
