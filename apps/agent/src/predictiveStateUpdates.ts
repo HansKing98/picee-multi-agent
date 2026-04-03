@@ -71,7 +71,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
     config = { recursionLimit: 25 };
   }
 
-  // Use "predict_state" metadata to set up streaming for the write_document_local tool
+  // Use "predict_state" metadata to set up streaming for the write_document tool
   if (!config.metadata) config.metadata = {};
   config.metadata.predict_state = [{
     state_key: "document",
@@ -105,13 +105,37 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
     const toolCall = response.tool_calls[0];
 
     if (toolCall.name === "write_document") {
+      // Add the tool response to messages
+      const toolResponse = {
+        role: "tool" as const,
+        content: "Document written.",
+        tool_call_id: toolCall.id
+      };
+
+      // Add confirmation tool call
+      const confirmToolCall = {
+        role: "assistant" as const,
+        content: "",
+        tool_calls: [{
+          id: uuidv4(),
+          type: "function" as const,
+          function: {
+            name: "confirm_changes",
+            arguments: "{}"
+          }
+        }]
+      };
+
+      // const updatedMessages = [...messages, toolResponse, confirmToolCall];
+      const updatedMessages = [...messages];
+
       // Return Command to route to end
       // CopilotKit will detect the unfulfilled `write_document` tool call
       // and trigger the `useHumanInTheLoop` hook on the frontend.
       return new Command({
         goto: END,
         update: {
-          messages: messages,
+          messages: updatedMessages,
           document: toolCall.args.document
         }
       });

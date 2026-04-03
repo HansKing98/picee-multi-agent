@@ -204,6 +204,7 @@ const DocumentEditor = () => {
     agentId: "predictive_state_updates",
     updates: [UseAgentUpdate.OnStateChanged, UseAgentUpdate.OnRunStatusChanged],
   });
+  
 
   const agentState = agent.state as AgentState | undefined;
   const setAgentState = (s: AgentState) => agent.setState(s);
@@ -258,7 +259,6 @@ const DocumentEditor = () => {
       });
     }
   }, [text]);
-
 
 
   // Action to write the document.
