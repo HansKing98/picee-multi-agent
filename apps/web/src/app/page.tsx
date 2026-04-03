@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const demoCards = [
   {
-    href: "/start",
+    href: "/ai-start",
     tag: "Quick Start",
     title: "Agent Starter Demo",
     description: "体验基础 Copilot/Agent 交互流程，快速查看状态与工具调用。",

@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@copilotkit/react-core": "1.54.0",
-    "@copilotkit/react-textarea": "1.54.0",
-    "@copilotkit/react-ui": "1.54.0",
-    "@copilotkit/runtime": "1.54.0",
+    "@copilotkit/react-core": "1.54.1",
+    "@copilotkit/react-textarea": "1.54.1",
+    "@copilotkit/react-ui": "1.54.1",
+    "@copilotkit/runtime": "1.54.1",
     "@tiptap/react": "^3.20.4",
     "@tiptap/starter-kit": "^3.20.4",
     "diff": "^8.0.3",

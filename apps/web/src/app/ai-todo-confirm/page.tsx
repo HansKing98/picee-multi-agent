@@ -69,11 +69,11 @@ const StepHeader = ({
   <div className="mb-5">
     <div className="flex items-center justify-between mb-3">
       <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-        Select Steps
+        选择步骤
       </h2>
       <div className="flex items-center gap-3">
         <div className={`text-sm ${theme === "dark" ? "text-slate-400" : "text-gray-500"}`}>
-          {enabledCount}/{totalCount} Selected
+          {enabledCount}/{totalCount} 已选
         </div>
         {showStatus && (
           <div
@@ -87,7 +87,7 @@ const StepHeader = ({
                   : "bg-gray-100 text-gray-600"
             }`}
           >
-            {status === "executing" ? "Ready" : "Waiting"}
+            {status === "executing" ? "可操作" : "等待中"}
           </div>
         )}
       </div>
@@ -292,7 +292,7 @@ const InterruptHumanInTheLoop: React.FC<{
     const selectedSteps = localSteps
       .filter((step) => step.status === "enabled")
       .map((step) => step.description);
-    resolve("The user selected the following steps: " + selectedSteps.join(", "));
+    resolve("用户已选择以下步骤：" + selectedSteps.join("，"));
   };
 
   return (
@@ -313,7 +313,7 @@ const InterruptHumanInTheLoop: React.FC<{
       <div className="flex justify-center">
         <ActionButton variant="primary" theme={theme} onClick={handlePerformSteps}>
           <span className="text-lg">✨</span>
-          Perform Steps
+          执行步骤
           <span
             className={`ml-1 px-2 py-1 rounded-full text-xs font-bold ${
               theme === "dark" ? "bg-purple-800/50" : "bg-purple-600/20"
@@ -340,8 +340,9 @@ const Chat = ({ integrationId }: { integrationId: string }) => {
 const ChatContent = () => {
   useConfigureSuggestions({
     suggestions: [
-      { title: "Simple plan", message: "Please plan a trip to mars in 5 steps." },
-      { title: "Complex plan", message: "Please plan a pasta dish in 10 steps." },
+      { title: "杨枝甘露", message: "请用 5 个步骤做杨枝甘露" },
+      { title: "简单计划", message: "请用 5 个步骤规划一次火星旅行。" },
+      { title: "复杂计划", message: "请用 10 个步骤规划一道意面料理。" },
     ],
     available: "always",
   });
@@ -355,8 +356,8 @@ const ChatContent = () => {
   useHumanInTheLoop({
     agentId: "human_in_the_loop",
     name: "generate_task_steps",
-    description: "Generates a list of steps for the user to perform",
-     parameters: z.object({
+    description: "生成供用户执行的任务步骤列表，如果用户要求步骤数量，需要准确识别。",
+      parameters: z.object({
       steps: z.array(
         z.object({
           description: z.string(),
@@ -458,7 +459,7 @@ const StepsFeedback = ({ args, respond, status }: { args: any; respond: any; sta
             onClick={handleReject}
           >
             <span className="mr-2">✗</span>
-            Reject
+            拒绝
           </ActionButton>
           <ActionButton
             variant="success"
@@ -467,7 +468,7 @@ const StepsFeedback = ({ args, respond, status }: { args: any; respond: any; sta
             onClick={handleConfirm}
           >
             <span className="mr-2">✓</span>
-            Confirm
+            确认
             <span
               className={`ml-2 px-2 py-1 rounded-full text-xs font-bold ${
                 theme === "dark" ? "bg-green-800/50" : "bg-green-600/20"
@@ -494,7 +495,7 @@ const StepsFeedback = ({ args, respond, status }: { args: any; respond: any; sta
             }`}
           >
             <span className="text-lg">{accepted ? "✓" : "✗"}</span>
-            {accepted ? "Accepted" : "Rejected"}
+            {accepted ? "已确认" : "已拒绝"}
           </div>
         </div>
       )}

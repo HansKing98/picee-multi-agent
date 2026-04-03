@@ -21,11 +21,11 @@ const Main = () => {
   // 🪁 Frontend Actions: https://docs.copilotkit.ai/guides/frontend-actions
   useCopilotAction({
     name: "setThemeColor",
-    description: "Set the theme color of the page.",
+    description: "设置页面的主题色。",
     parameters: [
       {
         name: "themeColor",
-        description: "The theme color to set. Make sure to pick nice colors.",
+        description: "要设置的主题色（十六进制色值），请选用协调美观的颜色。",
         required: true,
       },
     ],
@@ -45,9 +45,9 @@ const Main = () => {
           clickOutsideToClose={false}
           defaultOpen={true}
           labels={{
-            title: "Popup Assistant",
+            title: "弹窗助手",
             initial:
-              '👋 Hi, there! You\'re chatting with an agent. This agent comes with a few tools to get you started.\n\nFor example you can try:\n- **Frontend Tools**: "Set the theme to orange"\n- **Shared State**: "Write a proverb about AI"\n- **Generative UI**: "Get the weather in SF"\n\nAs you interact with the agent, you\'ll see the UI update in real-time to reflect the agent\'s **state**, **tool calls**, and **progress**.',
+              "👋 你好！你正在与智能体对话。本示例内置了一些工具，方便你快速上手。\n\n可以试试：\n- **前端工具**：「把主题改成橙色」\n- **共享状态**：「写一句关于人工智能的谚语」\n- **生成式 UI**：「查一下旧金山天气」\n\n与智能体交互时，界面会实时反映其**状态**、**工具调用**与**进度**。",
           }}
         />
         </main>
@@ -65,7 +65,7 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
     name: "starterAgent",
     initialState: {
       proverbs: [
-        "CopilotKit may be new, but its the best thing since sliced bread.",
+        "CopilotKit 虽新，却好比面包切片之后的那层惊喜。",
       ],
     },
   });
@@ -74,11 +74,11 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
   useCopilotAction(
     {
       name: "addProverb",
-      description: "Add a proverb to the list.",
+      description: "向列表中添加一条谚语。",
       parameters: [
         {
           name: "proverb",
-          description: "The proverb to add. Make it witty, short and concise.",
+          description: "要添加的谚语，需简短、有趣、朗朗上口。",
           required: true,
         },
       ],
@@ -95,9 +95,16 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
   //🪁 Generative UI: https://docs.copilotkit.ai/coagents/generative-ui
   useCopilotAction({
     name: "getWeather",
-    description: "Get the weather for a given location.",
+    description: "查询指定地点的天气。",
     available: "disabled",
-    parameters: [{ name: "location", type: "string", required: true }],
+    parameters: [
+      {
+        name: "location",
+        type: "string",
+        description: "要查询天气的地点名称，例如「旧金山」。",
+        required: true,
+      },
+    ],
     render: ({ args }) => {
       return <WeatherCard location={args.location} themeColor={themeColor} />;
     },
@@ -110,10 +117,10 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
     >
       <div className="bg-white/20 backdrop-blur-md p-8 rounded-2xl shadow-xl max-w-2xl w-full">
         <h1 className="text-4xl font-bold text-white mb-2 text-center">
-          Proverbs
+          谚语
         </h1>
         <p className="text-gray-200 text-center italic mb-6">
-          This is a demonstrative page, but it could be anything you want! 🪁
+          本页为演示用途，你也可以把它换成任意业务场景。🪁
         </p>
         <hr className="border-white/20 my-6" />
         <div className="flex flex-col gap-3">
@@ -140,7 +147,7 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
         </div>
         {state.proverbs?.length === 0 && (
           <p className="text-center text-white/80 italic my-8">
-            No proverbs yet. Ask the assistant to add some!
+            暂无谚语，请让助手为你添加几条吧！
           </p>
         )}
       </div>
@@ -187,28 +194,28 @@ function WeatherCard({
             <h3 className="text-xl font-bold text-white capitalize">
               {location}
             </h3>
-            <p className="text-white">Current Weather</p>
+            <p className="text-white">当前天气</p>
           </div>
           <SunIcon />
         </div>
 
         <div className="mt-4 flex items-end justify-between">
           <div className="text-3xl font-bold text-white">70°</div>
-          <div className="text-sm text-white">Clear skies</div>
+          <div className="text-sm text-white">晴朗</div>
         </div>
 
         <div className="mt-4 pt-4 border-t border-white">
           <div className="grid grid-cols-3 gap-2 text-center">
             <div>
-              <p className="text-white text-xs">Humidity</p>
+              <p className="text-white text-xs">湿度</p>
               <p className="text-white font-medium">45%</p>
             </div>
             <div>
-              <p className="text-white text-xs">Wind</p>
-              <p className="text-white font-medium">5 mph</p>
+              <p className="text-white text-xs">风速</p>
+              <p className="text-white font-medium">5 英里/时</p>
             </div>
             <div>
-              <p className="text-white text-xs">Feels Like</p>
+              <p className="text-white text-xs">体感</p>
               <p className="text-white font-medium">72°</p>
             </div>
           </div>

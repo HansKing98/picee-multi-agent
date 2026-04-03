@@ -11,7 +11,7 @@ import { Command, Annotation, MessagesAnnotation, StateGraph, END, START } from 
 const WRITE_DOCUMENT_TOOL = {
   type: "function",
   function: {
-    name: "write_document_local",
+    name: "write_document",
     description: [
       "Write a document. Use markdown formatting to format the document.",
       "It's good to format the document extensively so it's easy to read.",
@@ -47,14 +47,10 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   /**
    * Standard chat node.
    */
-  // console.log('hans-debug',{
-  //   state,
-  //   config
-  // })
 
   const systemPrompt = `
     You are a helpful assistant for writing documents.
-    To write the document, you MUST use the write_document_local tool.
+    To write the document, you MUST use the write_document tool.
     You MUST write the full document, even when changing only a few words.
     When you wrote the document, DO NOT repeat it as a message.
     Just briefly summarize the changes you made. 2 sentences max.
@@ -64,7 +60,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   // Define the model
   const model = new ChatOpenAI({
     temperature: 0,
-    model: "openai/gpt-5.2",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -79,7 +75,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   if (!config.metadata) config.metadata = {};
   config.metadata.predict_state = [{
     state_key: "document",
-    tool: "write_document_local",
+    tool: "write_document",
     tool_argument: "document"
   }];
 
@@ -108,35 +104,14 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
   if (response.tool_calls && response.tool_calls.length > 0) {
     const toolCall = response.tool_calls[0];
 
-    if (toolCall.name === "write_document_local") {
-      // Add the tool response to messages
-      const toolResponse = {
-        role: "tool" as const,
-        content: "Document written.",
-        tool_call_id: toolCall.id
-      };
-
-      // Add confirmation tool call
-      const confirmToolCall = {
-        role: "assistant" as const,
-        content: "",
-        tool_calls: [{
-          id: uuidv4(),
-          type: "function" as const,
-          function: {
-            name: "confirm_changes",
-            arguments: "{}"
-          }
-        }]
-      };
-
-      const updatedMessages = [...messages, toolResponse, confirmToolCall];
-
+    if (toolCall.name === "write_document") {
       // Return Command to route to end
+      // CopilotKit will detect the unfulfilled `write_document` tool call
+      // and trigger the `useHumanInTheLoop` hook on the frontend.
       return new Command({
         goto: END,
         update: {
-          messages: updatedMessages,
+          messages: messages,
           document: toolCall.args.document
         }
       });

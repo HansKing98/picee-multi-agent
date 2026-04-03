@@ -51,7 +51,7 @@ const GENERATE_RECIPE_TOOL = {
   type: "function",
   function: {
     name: "generate_recipe",
-    description: "Using the existing (if any) ingredients and instructions, proceed with the recipe to finish it. Make sure the recipe is complete. ALWAYS provide the entire recipe, not just the changes.",
+    description: "在已有（若有）食材与步骤基础上继续完善食谱，确保完整。必须始终提供完整食谱，而非仅列出改动。",
     parameters: {
       type: "object",
       properties: {
@@ -61,7 +61,7 @@ const GENERATE_RECIPE_TOOL = {
             skill_level: {
               type: "string",
               enum: Object.values(SkillLevel),
-              description: "The skill level required for the recipe"
+              description: "食谱所需厨艺水平"
             },
             special_preferences: {
               type: "array",
@@ -69,33 +69,33 @@ const GENERATE_RECIPE_TOOL = {
                 type: "string",
                 enum: Object.values(SpecialPreferences)
               },
-              description: "A list of special preferences for the recipe"
+              description: "食谱的特殊偏好列表"
             },
             cooking_time: {
               type: "string",
               enum: Object.values(CookingTime),
-              description: "The cooking time of the recipe"
+              description: "烹饪所需时间"
             },
             ingredients: {
               type: "array",
               items: {
                 type: "object",
                 properties: {
-                  icon: { type: "string", description: "The icon emoji (not emoji code like '\\u1f35e', but the actual emoji like 🥕) of the ingredient" },
+                  icon: { type: "string", description: "食材图标 emoji（使用真实 emoji，而非 \\u 转义）" },
                   name: { type: "string" },
                   amount: { type: "string" }
                 }
               },
-              description: "Entire list of ingredients for the recipe, including the new ingredients and the ones that are already in the recipe"
+              description: "完整食材列表，含新增与原有食材"
             },
             instructions: {
               type: "array",
               items: { type: "string" },
-              description: "Entire list of instructions for the recipe, including the new instructions and the ones that are already there"
+              description: "完整步骤列表，含新增与原有步骤"
             },
             changes: {
               type: "string",
-              description: "A description of the changes made to the recipe"
+              description: "对食谱所做改动的说明"
             }
           },
         }
@@ -123,8 +123,8 @@ async function startFlow(state: AgentState, config?: RunnableConfig): Promise<Co
       skill_level: SkillLevel.BEGINNER,
       special_preferences: [],
       cooking_time: CookingTime.FIFTEEN_MIN,
-      ingredients: [{ icon: "🍴", name: "Sample Ingredient", amount: "1 unit" }],
-      instructions: ["First step instruction"]
+      ingredients: [{ icon: "🍴", name: "示例食材", amount: "1 份" }],
+      instructions: ["第一步操作说明"]
     };
     // Emit the initial state to ensure it's properly shared with the frontend
     await dispatchCustomEvent("manually_emit_intermediate_state", state, config);
@@ -144,33 +144,33 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
    * Standard chat node.
    */
   // Create a safer serialization of the recipe
-  let recipeJson = "No recipe yet";
+  let recipeJson = "尚无食谱";
   if (state.recipe) {
     try {
       recipeJson = JSON.stringify(state.recipe, null, 2);
     } catch (e) {
-      recipeJson = `Error serializing recipe: ${e}`;
+      recipeJson = `序列化食谱时出错：${e}`;
     }
   }
 
-  const systemPrompt = `You are a helpful assistant for creating recipes. 
-    This is the current state of the recipe: ${recipeJson}
-    You can improve the recipe by calling the generate_recipe tool.
-    
-    IMPORTANT:
-    1. Create a recipe using the existing ingredients and instructions. Make sure the recipe is complete.
-    2. For ingredients, append new ingredients to the existing ones.
-    3. For instructions, append new steps to the existing ones.
-    4. 'ingredients' is always an array of objects with 'icon', 'name', and 'amount' fields
-    5. 'instructions' is always an array of strings
+  const systemPrompt = `你是协助用户编写食谱的助手。
+    当前食谱状态：${recipeJson}
+    可通过调用 generate_recipe 工具来完善食谱。
 
-    If you have just created or modified the recipe, just answer in one sentence what you did. dont describe the recipe, just say what you did.
+    重要约定：
+    1. 在现有食材与步骤基础上完成食谱，确保内容完整。
+    2. 新增食材请追加到原列表之后。
+    3. 新增步骤请追加到原步骤之后。
+    4. ingredients 必须为对象数组，每项含 icon、name、amount。
+    5. instructions 必须为字符串数组。
+
+    若你刚创建或修改了食谱，回复仅用一句话说明你做了什么，不要复述食谱全文。
     `;
 
   // Define the model
   const model = new ChatOpenAI({
     temperature: 0,
-    model: "gpt-4o",
+    model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -241,7 +241,7 @@ async function chatNode(state: AgentState, config?: RunnableConfig): Promise<Com
       // Add tool response to messages
       const toolResponse = {
         role: "tool" as const,
-        content: "Recipe generated.",
+        content: "食谱已生成。",
         tool_call_id: toolCall.id
       };
       

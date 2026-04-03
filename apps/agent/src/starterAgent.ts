@@ -29,13 +29,13 @@ export type AgentState = typeof AgentStateAnnotation.State;
 // 3. Define a simple tool to get the weather statically
 const getWeather = tool(
   (args) => {
-    return `The weather for ${args.location} is 70 degrees, clear skies, 45% humidity, 5 mph wind, and feels like 72 degrees.`;
+    return `${args.location} 的天气为：气温 70°F，晴朗，湿度 45%，风速 5 mph，体感约 72°F。`;
   },
   {
     name: "getWeather",
-    description: "Get the weather for a given location.",
+    description: "查询指定地点的天气情况。",
     schema: z.object({
-      location: z.string().describe("The location to get weather for"),
+      location: z.string().describe("要查询天气的地点"),
     }),
   },
 );
@@ -46,7 +46,7 @@ const tools = [getWeather];
 // 5. Define the chat node, which will handle the chat logic
 async function chat_node(state: AgentState, config: RunnableConfig) {
   // 5.1 Define the model, lower temperature for deterministic responses
-  const model = new ChatOpenAI({ temperature: 0, model: "gpt-4o",
+  const model = new ChatOpenAI({ temperature: 0, model: process.env.OPENAI_API_MODEL || 'gpt-4o',
     ...(process.env.OPENAI_API_KEY && { apiKey: process.env.OPENAI_API_KEY }),
     ...(process.env.OPENAI_API_BASE_URL && {
       configuration: { baseURL: process.env.OPENAI_API_BASE_URL },
@@ -63,7 +63,7 @@ async function chat_node(state: AgentState, config: RunnableConfig) {
   // 5.3 Define the system message, which will be used to guide the model, in this case
   //     we also add in the language to use from the state.
   const systemMessage = new SystemMessage({
-    content: `You are a helpful assistant. The current proverbs are ${JSON.stringify(state.proverbs)}.`,
+    content: `你是一个乐于助人的助手。当前谚语列表为：${JSON.stringify(state.proverbs)}。`,
   });
 
   // 5.4 Invoke the model with the system message and the messages in the state
