@@ -80,21 +80,21 @@ export type TravelAgentState = typeof TravelAgentStateAnnotation.State;
 
 // Static data for demonstration
 const STATIC_FLIGHTS: Flight[] = [
-  { airline: "KLM", departure: "Amsterdam (AMS)", arrival: "San Francisco (SFO)", price: "$650", duration: "11h 30m" },
-  { airline: "United", departure: "Amsterdam (AMS)", arrival: "San Francisco (SFO)", price: "$720", duration: "12h 15m" }
+  { airline: "荷兰皇家航空 (KLM)", departure: "阿姆斯特丹 (AMS)", arrival: "旧金山 (SFO)", price: "$650", duration: "11小时30分钟" },
+  { airline: "美国联合航空 (United)", departure: "阿姆斯特丹 (AMS)", arrival: "旧金山 (SFO)", price: "$720", duration: "12小时15分钟" }
 ];
 
 const STATIC_HOTELS: Hotel[] = [
-  { name: "Hotel Zephyr", location: "Fisherman's Wharf", price_per_night: "$280/night", rating: "4.2 stars" },
-  { name: "The Ritz-Carlton", location: "Nob Hill", price_per_night: "$550/night", rating: "4.8 stars" },
-  { name: "Hotel Zoe", location: "Union Square", price_per_night: "$320/night", rating: "4.4 stars" }
+  { name: "Zephyr 酒店", location: "渔人码头", price_per_night: "$280/晚", rating: "4.2 星" },
+  { name: "丽思卡尔顿酒店", location: "诺布山", price_per_night: "$550/晚", rating: "4.8 星" },
+  { name: "Zoe 酒店", location: "联合广场", price_per_night: "$320/晚", rating: "4.4 星" }
 ];
 
 const STATIC_EXPERIENCES: Experience[] = [
-  { name: "Pier 39", type: "activity", description: "标志性海滨景点，有商铺与海狮", location: "渔人码头" },
-  { name: "Golden Gate Bridge", type: "activity", description: "世界闻名的悬索桥，视野开阔", location: "金门" },
-  { name: "Swan Oyster Depot", type: "restaurant", description: "历史悠久的海鲜吧台，供应新鲜生蚝", location: "波尔克街" },
-  { name: "Tartine Bakery", type: "restaurant", description: "以面包与糕点闻名的手工烘焙店", location: "米慎区" }
+  { name: "39号码头 (Pier 39)", type: "activity", description: "标志性海滨景点，有商铺与海狮", location: "渔人码头" },
+  { name: "金门大桥", type: "activity", description: "世界闻名的悬索桥，视野开阔", location: "金门" },
+  { name: "Swan 生蚝吧", type: "restaurant", description: "历史悠久的海鲜吧台，供应新鲜生蚝", location: "波尔克街" },
+  { name: "Tartine 面包店", type: "restaurant", description: "以面包与糕点闻名的手工烘焙店", location: "米慎区" }
 ];
 
 function createInterrupt(message: string, options: any[], recommendation: any, agent: string) {

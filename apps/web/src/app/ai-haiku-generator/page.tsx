@@ -51,9 +51,9 @@ export default function ToolBasedGenerativeUI({ params }: ToolBasedGenerativeUIP
 function SidebarWithSuggestions({ defaultOpen }: { defaultOpen: boolean }) {
   useConfigureSuggestions({
     suggestions: [
-      { title: "Nature Haiku", message: "Write me a haiku about nature." },
-      { title: "Ocean Haiku", message: "Create a haiku about the ocean." },
-      { title: "Spring Haiku", message: "Generate a haiku about spring." },
+      { title: "自然俳句", message: "给我写一首关于自然的俳句。" },
+      { title: "海洋俳句", message: "创作一首关于海洋的俳句。" },
+      { title: "春日俳句", message: "生成一首关于春天的俳句。" },
     ],
     available: "always",
   });
@@ -63,7 +63,7 @@ function SidebarWithSuggestions({ defaultOpen }: { defaultOpen: boolean }) {
       agentId="tool_based_generative_ui"
       defaultOpen={defaultOpen}
       labels={{
-        modalHeaderTitle: "Haiku Generator",
+        modalHeaderTitle: "俳句生成器",
       }}
     />
   );
@@ -87,7 +87,7 @@ function HaikuDisplay() {
   const [haikus, setHaikus] = useState<Haiku[]>([
     {
       japanese: ["仮の句よ", "まっさらながら", "花を呼ぶ"],
-      english: ["A placeholder verse—", "even in a blank canvas,", "it beckons flowers."],
+      english: ["备用诗句——", "即使在空白的画布上，", "它也呼唤着花朵。"],
       image_name: null,
       gradient: "",
     },
@@ -98,10 +98,10 @@ function HaikuDisplay() {
       agentId: "tool_based_generative_ui",
       name: "generate_haiku",
        parameters: z.object({
-        japanese: z.array(z.string()).describe("3 lines of haiku in Japanese"),
-        english: z.array(z.string()).describe("3 lines of haiku translated to English"),
-        image_name: z.string().describe(`One relevant image name from: ${VALID_IMAGE_NAMES.join(", ")}`),
-        gradient: z.string().describe("CSS Gradient color for the background"),
+        japanese: z.array(z.string()).describe("日文写的3行俳句"),
+        english: z.array(z.string()).describe("翻译为中文的3行俳句"),
+        image_name: z.string().describe(`从以下选出一个相关的图片名称: ${VALID_IMAGE_NAMES.join(", ")}`),
+        gradient: z.string().describe("背景的 CSS 渐变色"),
       })  ,
       followUp: false,
       handler: async ({ japanese, english, image_name, gradient }: { japanese: string[]; english: string[]; image_name: string; gradient: string }) => {
@@ -113,10 +113,10 @@ function HaikuDisplay() {
         };
         setHaikus((prev) => [
           newHaiku,
-          ...prev.filter((h) => h.english[0] !== "A placeholder verse—"),
+          ...prev.filter((h) => h.english[0] !== "备用诗句——"),
         ]);
         setActiveIndex(0);
-        return "Haiku generated!";
+        return "俳句已生成！";
       },
       render: ({ args }: { args: Partial<Haiku> }) => {
         if (!args.japanese) return <></>;

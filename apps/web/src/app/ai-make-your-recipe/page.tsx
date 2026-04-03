@@ -30,8 +30,8 @@ export default function SharedState({ params }: SharedStateProps) {
   const { isChatOpen, setChatHeight, setIsChatOpen, isDragging, chatHeight, handleDragStart } =
     useMobileChat(defaultChatHeight);
 
-  const chatTitle = "AI Recipe Assistant";
-  const chatDescription = "Ask me to craft recipes";
+  const chatTitle = "AI 食谱助手";
+  const chatDescription = "让我帮您制作食谱";
 
   return (
     <CopilotKit
@@ -156,17 +156,17 @@ export default function SharedState({ params }: SharedStateProps) {
 }
 
 enum SkillLevel {
-  BEGINNER = "Beginner",
-  INTERMEDIATE = "Intermediate",
-  ADVANCED = "Advanced",
+  BEGINNER = "入门",
+  INTERMEDIATE = "中级",
+  ADVANCED = "高级",
 }
 
 enum CookingTime {
-  FiveMin = "5 min",
-  FifteenMin = "15 min",
-  ThirtyMin = "30 min",
-  FortyFiveMin = "45 min",
-  SixtyPlusMin = "60+ min",
+  FiveMin = "5 分钟",
+  FifteenMin = "15 分钟",
+  ThirtyMin = "30 分钟",
+  FortyFiveMin = "45 分钟",
+  SixtyPlusMin = "60+ 分钟",
 }
 
 const cookingTimeValues = [
@@ -178,13 +178,13 @@ const cookingTimeValues = [
 ];
 
 enum SpecialPreferences {
-  HighProtein = "High Protein",
-  LowCarb = "Low Carb",
-  Spicy = "Spicy",
-  BudgetFriendly = "Budget-Friendly",
-  OnePotMeal = "One-Pot Meal",
-  Vegetarian = "Vegetarian",
-  Vegan = "Vegan",
+  HighProtein = "高蛋白",
+  LowCarb = "低碳水",
+  Spicy = "偏辣",
+  BudgetFriendly = "经济实惠",
+  OnePotMeal = "一锅出",
+  Vegetarian = "素食",
+  Vegan = "纯素食",
 }
 
 interface Ingredient {
@@ -208,15 +208,15 @@ interface RecipeAgentState {
 
 const INITIAL_STATE: RecipeAgentState = {
   recipe: {
-    title: "Make Your Recipe",
+    title: "定制你的食谱",
     skill_level: SkillLevel.INTERMEDIATE,
     cooking_time: CookingTime.FortyFiveMin,
     special_preferences: [],
     ingredients: [
-      { icon: "🥕", name: "Carrots", amount: "3 large, grated" },
-      { icon: "🌾", name: "All-Purpose Flour", amount: "2 cups" },
+      { icon: "🥕", name: "胡萝卜", amount: "3 个大的，磨碎" },
+      { icon: "🌾", name: "中筋面粉", amount: "2 杯" },
     ],
-    instructions: ["Preheat oven to 350°F (175°C)"],
+    instructions: ["将烤箱预热至 350°F (175°C)"],
   },
 };
 
@@ -231,16 +231,16 @@ function Recipe() {
   useConfigureSuggestions({
     suggestions: [
       {
-        title: "Create Italian recipe",
-        message: "Create a delicious Italian pasta recipe.",
+        title: "创建意式食谱",
+        message: "制作一份美味的意式意大利面食谱。",
       },
       {
-        title: "Make it healthier",
-        message: "Make the recipe healthier with more vegetables.",
+        title: "更健康的吃法",
+        message: "加更多蔬菜，让食谱更健康。",
       },
       {
-        title: "Suggest variations",
-        message: "Suggest some creative variations of this recipe.",
+        title: "提供一些变种建议",
+        message: "为这个食谱建议一些有创意的变种。",
       },
     ],
     available: "always",
@@ -472,7 +472,7 @@ function Recipe() {
       {/* Dietary Preferences */}
       <div className="section-container relative">
         {changedKeysRef.current.includes("special_preferences") && <Ping />}
-        <h2 className="section-title">Dietary Preferences</h2>
+        <h2 className="section-title">饮食偏好</h2>
         <div className="dietary-options">
           {Object.values(SpecialPreferences).map((option) => (
             <label key={option} className="dietary-option">
@@ -493,14 +493,14 @@ function Recipe() {
       <div className="section-container relative">
         {changedKeysRef.current.includes("ingredients") && <Ping />}
         <div className="section-header">
-          <h2 className="section-title">Ingredients</h2>
+          <h2 className="section-title">食材</h2>
           <button
             data-testid="add-ingredient-button"
             type="button"
             className="add-button"
             onClick={addIngredient}
           >
-            + Add Ingredient
+            + 添加食材
           </button>
         </div>
         <div data-testid="ingredients-container" className="ingredients-container">
@@ -512,14 +512,14 @@ function Recipe() {
                   type="text"
                   value={ingredient.name || ""}
                   onChange={(e) => updateIngredient(index, "name", e.target.value)}
-                  placeholder="Ingredient name"
+                  placeholder="食材名称"
                   className="ingredient-name-input"
                 />
                 <input
                   type="text"
                   value={ingredient.amount || ""}
                   onChange={(e) => updateIngredient(index, "amount", e.target.value)}
-                  placeholder="Amount"
+                  placeholder="用量"
                   className="ingredient-amount-input"
                 />
               </div>
@@ -540,9 +540,9 @@ function Recipe() {
       <div className="section-container relative">
         {changedKeysRef.current.includes("instructions") && <Ping />}
         <div className="section-header">
-          <h2 className="section-title">Instructions</h2>
+          <h2 className="section-title">步骤</h2>
           <button type="button" className="add-step-button" onClick={addInstruction}>
-            + Add Step
+            + 添加步骤
           </button>
         </div>
         <div data-testid="instructions-container" className="instructions-container">
@@ -567,7 +567,7 @@ function Recipe() {
                   className="instruction-textarea"
                   value={instruction || ""}
                   onChange={(e) => updateInstruction(index, e.target.value)}
-                  placeholder={!instruction ? "Enter cooking instruction..." : ""}
+                  placeholder={!instruction ? "输入烹饪步骤..." : ""}
                   onFocus={() => setEditingInstructionIndex(index)}
                   onBlur={(e) => {
                     // Only blur if clicking outside this instruction
@@ -610,14 +610,14 @@ function Recipe() {
               agent.addMessage({
                 id: crypto.randomUUID(),
                 role: "user",
-                content: "Improve the recipe",
+                content: "优化食谱",
               });
               copilotkit.runAgent({ agent });
             }
           }}
           disabled={isLoading}
         >
-          {isLoading ? "Please Wait..." : "Improve with AI"}
+          {isLoading ? "请稍候..." : "使用 AI 优化食谱"}
         </button>
       </div>
     </form>

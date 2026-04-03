@@ -89,10 +89,10 @@ function InterruptHumanInTheLoop<TAgent extends AvailableAgents>({
   // Format agent name with emoji
   const formatAgentName = (agent: string) => {
     switch (agent) {
-      case 'flights': return 'Flights Agent';
-      case 'hotels': return 'Hotels Agent';
-      case 'experiences': return 'Experiences Agent';
-      default: return `${agent} Agent`;
+      case 'flights': return '航班助手';
+      case 'hotels': return '酒店助手';
+      case 'experiences': return '体验助手';
+      default: return `${agent} 助手`;
     }
   };
 
@@ -115,7 +115,7 @@ function InterruptHumanInTheLoop<TAgent extends AvailableAgents>({
                 className={`option-card flight-option ${isRecommended ? 'recommended' : ''}`}
                 onClick={() => handleOptionSelect(opt)}
               >
-                {isRecommended && <span className="recommendation-badge">⭐ Recommended</span>}
+                {isRecommended && <span className="recommendation-badge">⭐ 推荐</span>}
                 <div className="option-header">
                   <span className="airline-name">{opt.airline}</span>
                   <span className="price">{opt.price}</span>
@@ -138,7 +138,7 @@ function InterruptHumanInTheLoop<TAgent extends AvailableAgents>({
               className={`option-card hotel-option ${isRecommended ? 'recommended' : ''}`}
               onClick={() => handleOptionSelect(opt)}
             >
-              {isRecommended && <span className="recommendation-badge">⭐ Recommended</span>}
+              {isRecommended && <span className="recommendation-badge">⭐ 推荐</span>}
               <div className="option-header">
                 <span className="hotel-name">{opt.name}</span>
                 <span className="rating">{opt.rating}</span>
@@ -172,8 +172,8 @@ export default function Subgraphs({ params }: SubgraphsProps) {
     handleDragStart
   } = useMobileChat(defaultChatHeight);
 
-  const chatTitle = 'Travel Planning Assistant';
-  const chatDescription = 'Plan your perfect trip with AI specialists';
+  const chatTitle = '旅游规划助手';
+  const chatDescription = '与 AI 专家一起规划您的完美旅程';
 
   return (
     <CopilotKit
@@ -295,16 +295,16 @@ function TravelPlanner() {
   useConfigureSuggestions({
     suggestions: [
       {
-        title: "Plan a trip",
-        message: "Plan a trip to Paris for 5 days.",
+        title: "规划旅行",
+        message: "规划一个为期 5 天的巴黎之旅。",
       },
       {
-        title: "Find flights",
-        message: "Find me flights to Tokyo.",
+        title: "查找航班",
+        message: "帮我找去东京的航班。",
       },
       {
-        title: "Explore experiences",
-        message: "What are the best experiences in Barcelona?",
+        title: "探索当地体验",
+        message: "巴塞罗那有哪些值得体验的项目？",
       },
     ],
     available: "always",
@@ -329,11 +329,11 @@ function TravelPlanner() {
 
     return (
       <div className="itinerary-strip">
-        <div className="itinerary-label">Current Itinerary:</div>
+        <div className="itinerary-label">当前行程：</div>
         <div className="itinerary-items">
           <div className="itinerary-item">
             <span className="item-icon">📍</span>
-            <span>Amsterdam → San Francisco</span>
+            <span>阿姆斯特丹 → 旧金山</span>
           </div>
           {selectedFlight && (
             <div className="itinerary-item" data-testid="selected-flight">
@@ -350,7 +350,7 @@ function TravelPlanner() {
           {hasExperiences && (
             <div className="itinerary-item">
               <span className="item-icon">🎯</span>
-              <span>{agentState?.experiences?.length ?? 0} experiences planned</span>
+              <span>已安排 {agentState?.experiences?.length ?? 0} 项体验</span>
             </div>
           )}
         </div>
@@ -364,23 +364,23 @@ function TravelPlanner() {
 
     return (
       <div className="agent-status">
-        <div className="status-label">Active Agent:</div>
+        <div className="status-label">当前活动的助手：</div>
         <div className="agent-indicators">
           <div className={`agent-indicator ${activeAgent === 'supervisor' ? 'active' : ''}`} data-testid="supervisor-indicator">
-            <span>👨‍💼</span>
-            <span>Supervisor</span>
+            <span>👨💼</span>
+            <span>总协调人</span>
           </div>
           <div className={`agent-indicator ${activeAgent === 'flights' ? 'active' : ''}`} data-testid="flights-agent-indicator">
             <span>✈️</span>
-            <span>Flights</span>
+            <span>航班助手</span>
           </div>
           <div className={`agent-indicator ${activeAgent === 'hotels' ? 'active' : ''}`} data-testid="hotels-agent-indicator">
             <span>🏨</span>
-            <span>Hotels</span>
+            <span>酒店助手</span>
           </div>
           <div className={`agent-indicator ${activeAgent === 'experiences' ? 'active' : ''}`} data-testid="experiences-agent-indicator">
             <span>🎯</span>
-            <span>Experiences</span>
+            <span>体验助手</span>
           </div>
         </div>
       </div>
@@ -391,7 +391,7 @@ function TravelPlanner() {
   const TravelDetails = () => (
     <div className="travel-details">
       <div className="details-section">
-        <h4>✈️ Flight Options</h4>
+        <h4>✈️ 航班选项</h4>
         <div className="detail-items">
           {(agentState?.flights?.length ?? 0) > 0 ? (
             agentState!.flights.map((flight, index) => (
@@ -401,18 +401,18 @@ function TravelPlanner() {
               </div>
             ))
           ) : (
-            <p className="no-activities">No flights found yet</p>
+            <p className="no-activities">暂无查找到的航班</p>
           )}
           {agentState?.itinerary?.flight && (
             <div className="detail-tips">
-              <strong>Selected:</strong> {agentState.itinerary.flight.airline} - {agentState.itinerary.flight.price}
+              <strong>已选择:</strong> {agentState.itinerary.flight.airline} - {agentState.itinerary.flight.price}
             </div>
           )}
         </div>
       </div>
 
       <div className="details-section">
-        <h4>🏨 Hotel Options</h4>
+        <h4>🏨 酒店选项</h4>
         <div className="detail-items">
           {(agentState?.hotels?.length ?? 0) > 0 ? (
             agentState!.hotels.map((hotel, index) => (
@@ -422,18 +422,18 @@ function TravelPlanner() {
               </div>
             ))
           ) : (
-            <p className="no-activities">No hotels found yet</p>
+            <p className="no-activities">暂无查找到的酒店</p>
           )}
           {agentState?.itinerary?.hotel && (
             <div className="detail-tips">
-              <strong>Selected:</strong> {agentState.itinerary.hotel.name} - {agentState.itinerary.hotel.price_per_night}
+              <strong>已选择:</strong> {agentState.itinerary.hotel.name} - {agentState.itinerary.hotel.price_per_night}
             </div>
           )}
         </div>
       </div>
 
       <div className="details-section">
-        <h4>🎯 Experiences</h4>
+        <h4>🎯 体验项目</h4>
         <div className="detail-items">
           {(agentState?.experiences?.length ?? 0) > 0 ? (
             agentState!.experiences.map((experience, index) => (
@@ -441,11 +441,11 @@ function TravelPlanner() {
                 <div className="activity-name">{experience.name}</div>
                 <div className="activity-category">{experience.type}</div>
                 <div className="activity-description">{experience.description}</div>
-                <div className="activity-meta">Location: {experience.location}</div>
+                <div className="activity-meta">位置：{experience.location}</div>
               </div>
             ))
           ) : (
-            <p className="no-activities">No experiences planned yet</p>
+            <p className="no-activities">暂无可安排的体验</p>
           )}
         </div>
       </div>

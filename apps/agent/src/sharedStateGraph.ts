@@ -9,27 +9,27 @@ import { dispatchCustomEvent } from "@langchain/core/callbacks/dispatch";
 import { Command, Annotation, MessagesAnnotation, StateGraph, END, START } from "@langchain/langgraph";
 
 enum SkillLevel {
-  BEGINNER = "Beginner",
-  INTERMEDIATE = "Intermediate",
-  ADVANCED = "Advanced"
+  BEGINNER = "入门",
+  INTERMEDIATE = "中级",
+  ADVANCED = "高级"
 }
 
 enum SpecialPreferences {
-  HIGH_PROTEIN = "High Protein",
-  LOW_CARB = "Low Carb",
-  SPICY = "Spicy",
-  BUDGET_FRIENDLY = "Budget-Friendly",
-  ONE_POT_MEAL = "One-Pot Meal",
-  VEGETARIAN = "Vegetarian",
-  VEGAN = "Vegan"
+  HIGH_PROTEIN = "高蛋白",
+  LOW_CARB = "低碳水",
+  SPICY = "偏辣",
+  BUDGET_FRIENDLY = "经济实惠",
+  ONE_POT_MEAL = "一锅出",
+  VEGETARIAN = "素食",
+  VEGAN = "纯素食"
 }
 
 enum CookingTime {
-  FIVE_MIN = "5 min",
-  FIFTEEN_MIN = "15 min",
-  THIRTY_MIN = "30 min",
-  FORTY_FIVE_MIN = "45 min",
-  SIXTY_PLUS_MIN = "60+ min"
+  FIVE_MIN = "5 分钟",
+  FIFTEEN_MIN = "15 分钟",
+  THIRTY_MIN = "30 分钟",
+  FORTY_FIVE_MIN = "45 分钟",
+  SIXTY_PLUS_MIN = "60+ 分钟"
 }
 
 interface Ingredient {
